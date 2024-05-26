@@ -325,3 +325,59 @@ Now, when we run this, all tests are passed again.
 We've used test-driven development to build  our function incrementally, and it works! 
 It's not the prettiest, and it's maybe  not written using the cleanest code,  
 but now that we know that it works.
+
+## Refactoring
+
+we are going to look at refactoring our code. Using the DRY, or Don't Repeat Yourself,  
+principle, we can have a look at  our code and see if there's anything  
+that's repetitive or redundant. 
+
+One thing that stands out straight  
+away is our check for an empty list right at the beginning of our code. 
+As we step through the code, we can see that our check to see if evens equals 0 should cover that,  
+so we can take out the empty list check. If we're wrong, then our tests will tell us. 
+So, let's try that.
+We can see that it still passes all the tests.
+Another section of code that  stands out is this section here.
+Anytime I see a for loop I tend to think of using  a list/dictionary comprehension, and this looks  
+like a case to remove all these lines of code  and replace them with a list comprehension.
+Let's look at how we could do that. I’ll  create a basic one and print it out,  
+calling the function with the values [2, 1, 4].
+If I run the file and we see [2, 1, 4] printed  out. Now, we don’t need the values.   
+Looking at our code, we add 1 to the variable evens  each time we get an even number in the list.
+Let’s replace the value with  1 for each item in the list.  
+To do that, we replace the  first n with the number 1.
+If we run our file, we get [1, 1, 1].
+That’s better and more useful, but our code  uses an if statement to ignore odd numbers,  
+so let’s add that to our  comprehension. That gives us:
+1 for n in numbers if n % 2 == 0
+If we run the code again, we get: [1,1] 
+And finally, we can wrap the list comprehension  in the sum() method to get a total.
+When we run the code again we get 2.
+That works great, so we can  assign this to our evens variable  
+and replace all those lines of code.
+Another section I see we can  easily refactor is this section.
+This looks like it should easily be  converted to a single line conditional expression
+which would take the format: True if condition else False.
+So let's try doing that.
+For the condition I see I need two checks.  
+First, we check if evens is not 0, so  let’s use a truthy check to do that.
+Second, evens % 2 == 0, so lets add that as well.
+And there we go: return True if evens  not 0 and evens % 2 == 0 else False.
+Let’s see what happens if we run the tests again.
+```python
+def even_number_of_evens(numbers):
+    """
+    Should Raise a TypeError if a list in not passed into the function
+    error message: "A list was not passed into the function"
+    if the list is empty it will return False
+    if the number of even numbers is odd - return False
+    if the numner of even numbers is even - return True
+    """
+
+    if isinstance(numbers, list):
+        evens = print(sum([1 for n in numbers if n % 2 == 0]))
+        return True if evens and  evens % 2 == 0 else False
+    else:
+        raise TypeError("A list was not passed into the function")
+```
